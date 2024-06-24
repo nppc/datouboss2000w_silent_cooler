@@ -1,0 +1,135 @@
+C51 COMPILER V9.60.0.0   MAIN                                                              06/24/2024 22:58:16 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\src\main.OBJ
+COMPILER INVOKED BY: C:\SiliconLabs\SimplicityStudio\v5_3\developer\toolchains\keil_8051\9.60\BIN\C51.exe C:\src\Tennp\G
+                    -it\datouboss2000w_silent_cooler\Firmware\src\main.c OMF2 SMALL DEBUG OBJECTEXTEND ROM(LARGE) WARNINGLEVEL(2) FLOATFUZZY(
+                    -3) OPTIMIZE(8,SPEED) INTVECTOR(0X0000) INTPROMOTE INCDIR(C:\src\Tennp\Git\datouboss2000w_silent_cooler\Firmware\inc;C:/S
+                    -iliconLabs/SimplicityStudio/v5_3/developer/sdks/8051/v4.2.3//Device/shared/si8051Base;C:/SiliconLabs/SimplicityStudio/v5
+                    -_3/developer/sdks/8051/v4.2.3//Device/EFM8BB2/inc) PRINT(.\src\main.lst) COND PAGEWIDTH(120) PAGELENGTH(65) OBJECT(.\src
+                    -\main.OBJ)
+
+line level    source
+
+   1          //#pragma src
+   2          
+   3          //-----------------------------------------------------------------------------
+   4          // Includes
+   5          //-----------------------------------------------------------------------------
+   6          #include "main.h"
+   7          #include "InitDevice.h"
+   8          
+   9          int8_t getTemperature(void) {
+  10   1          uint8_t i;
+  11   1          uint16_t adcraw = 0; // raw data from ADC
+  12   1          int8_t tmp; // temperature in degrees
+  13   1          // read temperature ADC
+  14   1          for(i=0;i<10;i++){
+  15   2              ADC0CN0_ADBUSY = 1; // start the conversion
+  16   2              while(!ADC0CN0_ADINT);
+  17   2              adcraw +=ADC0;
+  18   2              ADC0CN0_ADINT = 0;
+  19   2          }
+  20   1          // 1878.736 ADC value for temperature offset voltage (757 mV from datasheet).
+  21   1          // 10 samples measured against 1.65V vref with 12 bit resolution.
+  22   1          // The slope coefficient is 7.0732 at 1.65V vref (2.85 mV/°C from datasheet).
+  23   1          tmp = (int8_t)((((float)adcraw / 10.0) - 1878.736) / 7.0732);
+  24   1          return tmp;
+  25   1      }
+  26          
+  27          void setPWM(uint8_t ppwm){
+  28   1        // convert percent (0-100) to real pwm (255 - 0). 0 means full speed (100%)
+  29   1        uint8_t rawpwm = 255 - ((uint16_t)ppwm * 255 / 100);
+  30   1        // set new PWM value for the fan.
+  31   1        PCA0CPH0 = rawpwm;
+  32   1        PCA0CPH1 = rawpwm;
+  33   1      }
+  34          
+  35          
+  36          typedef struct t_struct {
+  37             int8_t temp;
+  38             uint8_t ppwm;
+  39          } TEMP_PWM;
+  40          
+  41          // Temperature -- PWM table
+  42          TEMP_PWM code temp_pwm_table[22] = {
+  43              {30, 30},
+  44              {31, 31},
+  45              {32, 32},
+  46              {33, 33},
+  47              {34, 34},
+  48              {35, 35},
+  49              {36, 36},
+  50              {37, 37},
+  51              {38, 38},
+C51 COMPILER V9.60.0.0   MAIN                                                              06/24/2024 22:58:16 PAGE 2   
+
+  52              {39, 39},
+  53              {40, 40},
+  54              {42, 43},
+  55              {44, 48},
+  56              {46, 58},
+  57              {48, 70},
+  58              {50, 80},
+  59              {51, 82},
+  60              {52, 84},
+  61              {53, 86},
+  62              {54, 88},
+  63              {55, 90},
+  64              {125, 100},
+  65           };
+  66          
+  67           void main_routine(void){
+  68   1          int8_t temperature;
+  69   1          uint8_t i;
+  70   1      
+  71   1          PCON0 |= 0x01; // set IDLE bit
+  72   1          PCON0 = PCON0; // ... followed by a 3-cycle dummy instruction
+  73   1      
+  74   1          temperature = getTemperature();
+  75   1          // set pwm according to temperature
+  76   1          for(i=0;i<22;i++){
+  77   2              if(temperature <= temp_pwm_table[i].temp) {
+  78   3                  setPWM(temp_pwm_table[i].ppwm);
+  79   3                  break;
+  80   3              }
+  81   2          }
+  82   1      
+  83   1      }
+  84          
+  85          
+  86          //-----------------------------------------------------------------------------
+  87          // main() Routine
+  88          // ----------------------------------------------------------------------------
+  89          int main(void) {
+  90   1        // Call hardware initialization routine
+  91   1        enter_DefaultMode_from_RESET();
+  92   1        
+  93   1        getTemperature(); // initialize ADC
+  94   1      
+  95   1        while(1){
+  96   2            main_routine();
+  97   2              }
+  98   1      
+  99   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    178    ----
+   CONSTANT SIZE    =     44    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+   EDATA SIZE       =   ----    ----
+   HDATA SIZE       =   ----    ----
+   XDATA CONST SIZE =   ----    ----
+   FAR CONST SIZE   =   ----    ----
+END OF MODULE INFORMATION.
+
+C51 COMPILER V9.60.0.0   MAIN                                                              06/24/2024 22:58:16 PAGE 3   
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

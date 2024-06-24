@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="ASCII"?>
+<device:XMLDevice xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:device="http://www.silabs.com/ss/hwconfig/document/device.ecore" name="EFM8BB21F16G-C-QFN20" partId="mcu.8051.efm8.bb2.efm8bb21f16g-c-qfn20" version="4.0.0" contextId="%DEFAULT%">
+  <mode name="DefaultMode">
+    <property object="ADC_0" propertyId="ABPeripheral.included" value="true"/>
+    <property object="ADC_0" propertyId="adc.accumulatorconfiguration.enable12bitmode" value="Enabled"/>
+    <property object="ADC_0" propertyId="adc.accumulatorconfiguration.repeatcount" value="4 conversions"/>
+    <property object="ADC_0" propertyId="adc.configuration.gaincontrol" value="1x gain"/>
+    <property object="ADC_0" propertyId="adc.configuration.resolution" value="12-bit"/>
+    <property object="ADC_0" propertyId="adc.configuration.sarclockdivider" value="6"/>
+    <property object="ADC_0" propertyId="adc.control.enableadc" value="Enabled"/>
+    <property object="ADC_0" propertyId="adc.control.enableburstmode" value="Enabled"/>
+    <property object="ADC_0" propertyId="adc.multiplexerselection.positiveinputselection" value="ADC0.16 (Internal Temperature Sensor)"/>
+    <property object="ADC_0" propertyId="adc.powercontrol.selectbiaspower" value="Bias current mode 1 (SARCLK &lt;= 16 MHz)"/>
+    <property object="ADC_0" propertyId="adc.view.view" value="Advanced"/>
+    <property object="CLOCK_0" propertyId="ABPeripheral.included" value="true"/>
+    <property object="CLOCK_0" propertyId="clock.clockselect.clocksourcedivider" value="SYSCLK / 4"/>
+    <property object="CROSSBAR0" propertyId="xbar0.pca0.cex" value="CEX0 and CEX1"/>
+    <property object="DefaultMode" propertyId="mode.diagramLocation" value="100, 100"/>
+    <property object="INTERRUPT_0" propertyId="ABPeripheral.included" value="true"/>
+    <property object="INTERRUPT_0" propertyId="interrupt.extendedinterruptenable2.enabletimer4interrupt" value="Enabled"/>
+    <property object="INTERRUPT_0" propertyId="interrupt.interruptenable.enableallinterrupts" value="Enabled"/>
+    <property object="P0.0" propertyId="ports.settings.skip" value="Skipped"/>
+    <property object="P0.1" propertyId="ports.settings.skip" value="Skipped"/>
+    <property object="P0.2" propertyId="ports.settings.skip" value="Skipped"/>
+    <property object="P0.3" propertyId="ports.settings.skip" value="Skipped"/>
+    <property object="P0.4" propertyId="ports.settings.skip" value="Skipped"/>
+    <property object="P0.5" propertyId="ports.settings.skip" value="Skipped"/>
+    <property object="P0.6" propertyId="ports.settings.skip" value="Skipped"/>
+    <property object="P0.7" propertyId="ports.settings.skip" value="Skipped"/>
+    <property object="P1.0" propertyId="ports.settings.skip" value="Skipped"/>
+    <property object="P1.1" propertyId="ports.settings.skip" value="Skipped"/>
+    <property object="P1.2" propertyId="ports.settings.iomode" value="Digital Push-Pull Output"/>
+    <property object="P1.2" propertyId="ports.settings.label" value="PUMP"/>
+    <property object="P1.2" propertyId="ports.settings.latch" value="Low"/>
+    <property object="P1.2" propertyId="ports.settings.outputmode" value="Push-pull"/>
+    <property object="P1.3" propertyId="ports.settings.skip" value="Skipped"/>
+    <property object="P1.4" propertyId="ports.settings.iomode" value="Digital Push-Pull Output"/>
+    <property object="P1.4" propertyId="ports.settings.label" value="ServoPWR"/>
+    <property object="P1.4" propertyId="ports.settings.latch" value="Low"/>
+    <property object="P1.4" propertyId="ports.settings.outputmode" value="Push-pull"/>
+    <property object="PBCFG_0" propertyId="pbcfg.settings.enablecrossbar" value="Enabled"/>
+    <property object="PCACH_0" propertyId="ABPeripheral.included" value="true"/>
+    <property object="PCACH_0" propertyId="pcach.pcachannel.capturecomparehighbyte" value="200"/>
+    <property object="PCACH_0" propertyId="pcach.pcachannel.capturecomparelowbyte" value="200"/>
+    <property object="PCACH_0" propertyId="pcach.pcachannelcapturecomparemode.enablechannelpulsewidthmodulationmoden" value="Enabled"/>
+    <property object="PCACH_0" propertyId="pcach.pcacontrol.channelcapturecomparemode" value="Predefined 8~11-bit pulse modulator"/>
+    <property object="PCACH_1" propertyId="ABPeripheral.included" value="true"/>
+    <property object="PCACH_1" propertyId="pcach.pcachannel.capturecomparehighbyte" value="200"/>
+    <property object="PCACH_1" propertyId="pcach.pcachannel.capturecomparelowbyte" value="200"/>
+    <property object="PCACH_1" propertyId="pcach.pcachannelcapturecomparemode.enablechannelcomparatorfunction" value="Enabled"/>
+    <property object="PCACH_1" propertyId="pcach.pcachannelcapturecomparemode.enablechannelpulsewidthmodulationmoden" value="Enabled"/>
+    <property object="PCACH_1" propertyId="pcach.pcacontrol.channelcapturecomparemode" value="Predefined 8~11-bit pulse modulator"/>
+    <property object="PCA_0" propertyId="ABPeripheral.included" value="true"/>
+    <property object="PCA_0" propertyId="pca.pcacountertimerconfiguration.pcaclockfrequency" value="6.125 MHz"/>
+    <property object="PCA_0" propertyId="pca.pcacountertimerconfiguration.pcaclockfrequencyintegervalue" value="6125000"/>
+    <property object="PCA_0" propertyId="pca.pcacountertimerconfiguration.pcaclockperiod" value="163.000 nS"/>
+    <property object="PCA_0" propertyId="pca.pcacountertimerconfiguration.selectpcacountertimerpulse" value="SYSCLK"/>
+    <property object="PCA_0" propertyId="pca.pcacountertimerruncontrol.pcarun" value="Start"/>
+    <property object="TIMER01_0" propertyId="ABPeripheral.included" value="true"/>
+    <property object="TIMER16_3" propertyId="ABPeripheral.included" value="true"/>
+    <property object="TIMER16_3" propertyId="timer16.control.clocksource" value="SYSCLK"/>
+    <property object="TIMER16_3" propertyId="timer16.control.runcontrol" value="Start"/>
+    <property object="TIMER16_3" propertyId="timer16.control.timerrunningstate" value="Timer is Running"/>
+    <property object="TIMER16_3" propertyId="timer16.initandreloadvalue.targetoverflowfrequency" value="1000"/>
+    <property object="TIMER16_3" propertyId="timer16.initandreloadvalue.timerreloadvalue" value="59411"/>
+    <property object="TIMER16_3" propertyId="timer16.reloadhighbyte.reloadhighbyte" value="232"/>
+    <property object="TIMER16_3" propertyId="timer16.reloadlowbyte.reloadlowbyte" value="19"/>
+    <property object="TIMER16_4" propertyId="ABPeripheral.included" value="true"/>
+    <property object="TIMER16_4" propertyId="timer16.control.clocksource" value="T3 Overflows"/>
+    <property object="TIMER16_4" propertyId="timer16.control.runcontrol" value="Start"/>
+    <property object="TIMER16_4" propertyId="timer16.control.selectexternalclock" value="EXTOSC / 8"/>
+    <property object="TIMER16_4" propertyId="timer16.control.timerrunningstate" value="Timer is Running"/>
+    <property object="TIMER16_4" propertyId="timer16.highbyte.highbyte" value="255"/>
+    <property object="TIMER16_4" propertyId="timer16.initandreloadvalue.targetoverflowfrequency" value="1"/>
+    <property object="TIMER16_4" propertyId="timer16.initandreloadvalue.timerinitvalue" value="65535"/>
+    <property object="TIMER16_4" propertyId="timer16.initandreloadvalue.timerreloadvalue" value="64536"/>
+    <property object="TIMER16_4" propertyId="timer16.lowbyte.lowbyte" value="255"/>
+    <property object="TIMER16_4" propertyId="timer16.reloadhighbyte.reloadhighbyte" value="252"/>
+    <property object="TIMER16_4" propertyId="timer16.reloadlowbyte.reloadlowbyte" value="24"/>
+    <property object="TIMER_SETUP_0" propertyId="ABPeripheral.included" value="true"/>
+    <property object="TIMER_SETUP_0" propertyId="timer_setup.clockcontrol.timer3lowbyteclockselect" value="Use SYSCLK"/>
+    <property object="VREF_0" propertyId="ABPeripheral.included" value="true"/>
+    <property object="VREF_0" propertyId="vref.voltagereferencecontrol.temperaturesensor" value="Enabled"/>
+    <property object="VREG_0" propertyId="ABPeripheral.included" value="true"/>
+    <property object="VREG_0" propertyId="vreg.5vto33vldoregulatorldo1.enableregulator" value="Disable Regulator"/>
+    <property object="VREG_0" propertyId="vreg.5vto33vldoregulatorldo1.regulatorbias" value="Disabled (Lowest power consumption)"/>
+    <property object="WDT_0" propertyId="ABPeripheral.included" value="true"/>
+    <property object="WDT_0" propertyId="wdt.watchdogcontrol.wdtenable" value="Disable"/>
+  </mode>
+  <modeTransition>
+    <property object="RESET &#x2192; DefaultMode" propertyId="modeTransition.source" value="RESET"/>
+    <property object="RESET &#x2192; DefaultMode" propertyId="modeTransition.target" value="DefaultMode"/>
+  </modeTransition>
+</device:XMLDevice>

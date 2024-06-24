@@ -1,0 +1,4 @@
+"./src/InitDevice.OBJ",
+"./src/Interrupts.OBJ",
+"./src/main.OBJ"
+TO "DATOUBOSS2KW_SIENT.OMF.CRBUILD" REMOVEUNUSED PRINT(.\Datouboss2KW_sient.m51) PAGEWIDTH (120) PAGELENGTH (65) CLASSES( ECODE(C:0x0 - C:0x3ffe), HCONST(C:0x0 - C:0x3ffe), XDATA(X:0x0 - X:0x7ff), HDATA(X:0x0 - X:0x7ff))
