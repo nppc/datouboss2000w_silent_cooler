@@ -1,4 +1,4 @@
-C51 COMPILER V9.60.0.0   MAIN                                                              06/24/2024 22:58:16 PAGE 1   
+C51 COMPILER V9.60.0.0   MAIN                                                              06/30/2024 19:29:38 PAGE 1   
 
 
 C51 COMPILER V9.60.0.0, COMPILATION OF MODULE MAIN
@@ -20,107 +20,137 @@ line level    source
    6          #include "main.h"
    7          #include "InitDevice.h"
    8          
-   9          int8_t getTemperature(void) {
-  10   1          uint8_t i;
-  11   1          uint16_t adcraw = 0; // raw data from ADC
-  12   1          int8_t tmp; // temperature in degrees
-  13   1          // read temperature ADC
-  14   1          for(i=0;i<10;i++){
-  15   2              ADC0CN0_ADBUSY = 1; // start the conversion
-  16   2              while(!ADC0CN0_ADINT);
-  17   2              adcraw +=ADC0;
-  18   2              ADC0CN0_ADINT = 0;
-  19   2          }
-  20   1          // 1878.736 ADC value for temperature offset voltage (757 mV from datasheet).
-  21   1          // 10 samples measured against 1.65V vref with 12 bit resolution.
-  22   1          // The slope coefficient is 7.0732 at 1.65V vref (2.85 mV/°C from datasheet).
-  23   1          tmp = (int8_t)((((float)adcraw / 10.0) - 1878.736) / 7.0732);
-  24   1          return tmp;
-  25   1      }
-  26          
-  27          void setPWM(uint8_t ppwm){
-  28   1        // convert percent (0-100) to real pwm (255 - 0). 0 means full speed (100%)
-  29   1        uint8_t rawpwm = 255 - ((uint16_t)ppwm * 255 / 100);
-  30   1        // set new PWM value for the fan.
-  31   1        PCA0CPH0 = rawpwm;
-  32   1        PCA0CPH1 = rawpwm;
-  33   1      }
-  34          
-  35          
-  36          typedef struct t_struct {
-  37             int8_t temp;
-  38             uint8_t ppwm;
-  39          } TEMP_PWM;
-  40          
-  41          // Temperature -- PWM table
-  42          TEMP_PWM code temp_pwm_table[22] = {
-  43              {30, 30},
-  44              {31, 31},
-  45              {32, 32},
-  46              {33, 33},
-  47              {34, 34},
-  48              {35, 35},
-  49              {36, 36},
-  50              {37, 37},
-  51              {38, 38},
-C51 COMPILER V9.60.0.0   MAIN                                                              06/24/2024 22:58:16 PAGE 2   
+   9          typedef struct t_struct {
+  10             int8_t temp;
+  11             uint8_t ppwm0;
+  12             uint8_t ppwm1;
+  13          } TEMP_PWM;
+  14          
+  15          // Temperature -- PWM table
+  16          /*
+  17          TEMP_PWM code temp_pwm_table[22] = {
+  18              {30, 5},
+  19              {31, 6},
+  20              {32, 7},
+  21              {33, 8},
+  22              {34, 9},
+  23              {35, 10},
+  24              {36, 12},
+  25              {37, 14},
+  26              {38, 16},
+  27              {39, 18},
+  28              {40, 22},
+  29              {42, 32},
+  30              {44, 42},
+  31              {46, 52},
+  32              {48, 62},
+  33              {50, 72},
+  34              {51, 82},
+  35              {52, 92},
+  36              {53, 94},
+  37              {54, 96},
+  38              {55, 98},
+  39              {125, 100},
+  40           };
+  41          */
+  42          
+  43          TEMP_PWM code temp_pwm_table[17] = {
+  44          {34, 5, 4},
+  45          {35, 8, 4},
+  46          {36, 10, 4},
+  47          {37, 12, 4},
+  48          {39, 14, 4},
+  49          {40, 16, 5},
+  50          {42, 20, 6},
+  51          {44, 25, 7},
+C51 COMPILER V9.60.0.0   MAIN                                                              06/30/2024 19:29:38 PAGE 2   
 
-  52              {39, 39},
-  53              {40, 40},
-  54              {42, 43},
-  55              {44, 48},
-  56              {46, 58},
-  57              {48, 70},
-  58              {50, 80},
-  59              {51, 82},
-  60              {52, 84},
-  61              {53, 86},
-  62              {54, 88},
-  63              {55, 90},
-  64              {125, 100},
-  65           };
-  66          
-  67           void main_routine(void){
-  68   1          int8_t temperature;
-  69   1          uint8_t i;
-  70   1      
-  71   1          PCON0 |= 0x01; // set IDLE bit
-  72   1          PCON0 = PCON0; // ... followed by a 3-cycle dummy instruction
-  73   1      
-  74   1          temperature = getTemperature();
-  75   1          // set pwm according to temperature
-  76   1          for(i=0;i<22;i++){
-  77   2              if(temperature <= temp_pwm_table[i].temp) {
-  78   3                  setPWM(temp_pwm_table[i].ppwm);
-  79   3                  break;
-  80   3              }
-  81   2          }
-  82   1      
-  83   1      }
-  84          
-  85          
-  86          //-----------------------------------------------------------------------------
-  87          // main() Routine
-  88          // ----------------------------------------------------------------------------
-  89          int main(void) {
-  90   1        // Call hardware initialization routine
-  91   1        enter_DefaultMode_from_RESET();
-  92   1        
-  93   1        getTemperature(); // initialize ADC
-  94   1      
-  95   1        while(1){
-  96   2            main_routine();
-  97   2              }
+  52          {46, 30, 9},
+  53          {48, 35, 15},
+  54          {50, 45, 25},
+  55          {51, 55, 36},
+  56          {52, 65, 48},
+  57          {53, 80, 62},
+  58          {54, 90, 74},
+  59          {55, 95, 86},
+  60          {125, 100, 100},
+  61          };
+  62          
+  63          int8_t getTemperature(void) {
+  64   1          uint8_t i;
+  65   1          uint16_t adcraw = 0; // raw data from ADC
+  66   1          int8_t tmp; // temperature in degrees
+  67   1          // read temperature ADC
+  68   1          for(i=0;i<10;i++){
+  69   2              ADC0CN0_ADBUSY = 1; // start the conversion
+  70   2              while(!ADC0CN0_ADINT);
+  71   2              adcraw +=ADC0;
+  72   2              ADC0CN0_ADINT = 0;
+  73   2          }
+  74   1          // 1878.736 ADC value for temperature offset voltage (757 mV from datasheet).
+  75   1          // 10 samples measured against 1.65V vref with 12 bit resolution.
+  76   1          // The slope coefficient is 7.0732 at 1.65V vref (2.85 mV/°C from datasheet).
+  77   1          tmp = (int8_t)((((float)adcraw / 10.0) - 1878.736) / 7.0732);
+  78   1          return tmp;
+  79   1      }
+  80          
+  81          void setPWM(uint8_t i){
+  82   1        // convert percent (0-100) to real pwm (255 - 0). 0 means full speed (100%)
+  83   1        uint8_t rawpwm0 = 255 - ((uint16_t)temp_pwm_table[i].ppwm0 * 255 / 100);
+  84   1        uint8_t rawpwm1 = 255 - ((uint16_t)temp_pwm_table[i].ppwm1 * 255 / 100);
+  85   1        // set new PWM value for the fan.
+  86   1        PCA0CPH0 = rawpwm0;
+  87   1        PCA0CPH1 = rawpwm1;
+  88   1      }
+  89          
+  90          
+  91          
+  92           void main_routine(void){
+  93   1          int8_t temperature;
+  94   1          uint8_t i;
+  95   1      
+  96   1          PCON0 |= 0x01; // set IDLE bit
+  97   1          PCON0 = PCON0; // ... followed by a 3-cycle dummy instruction
   98   1      
-  99   1      }
+  99   1          temperature = getTemperature();
+ 100   1          // set pwm according to temperature
+ 101   1          for(i=0;i<17;i++){
+ 102   2              if(temperature <= temp_pwm_table[i].temp) {
+ 103   3                  setPWM(i);
+ 104   3                  break;
+ 105   3              }
+ 106   2          }
+ 107   1      
+ 108   1      }
+ 109          
+ 110          
+ 111          //-----------------------------------------------------------------------------
+ 112          // main() Routine
+ 113          // ----------------------------------------------------------------------------
+ 114          int main(void) {
+C51 COMPILER V9.60.0.0   MAIN                                                              06/30/2024 19:29:38 PAGE 3   
+
+ 115   1        // Call hardware initialization routine
+ 116   1        enter_DefaultMode_from_RESET();
+ 117   1        
+ 118   1        setPWM(0); // set minimum speed
+ 119   1      
+ 120   1        getTemperature(); // initialize ADC
+ 121   1      
+ 122   1        while(1){
+ 123   2      
+ 124   2            main_routine();
+ 125   2              }
+ 126   1      
+ 127   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    178    ----
-   CONSTANT SIZE    =     44    ----
+   CODE SIZE        =    226    ----
+   CONSTANT SIZE    =     51    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =   ----    ----
+   DATA SIZE        =   ----       1
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
    EDATA SIZE       =   ----    ----
@@ -128,8 +158,6 @@ MODULE INFORMATION:   STATIC OVERLAYABLE
    XDATA CONST SIZE =   ----    ----
    FAR CONST SIZE   =   ----    ----
 END OF MODULE INFORMATION.
-
-C51 COMPILER V9.60.0.0   MAIN                                                              06/24/2024 22:58:16 PAGE 3   
 
 
 C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
